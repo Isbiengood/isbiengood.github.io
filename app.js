@@ -3,8 +3,12 @@ const btnCodeRouge = document.getElementById("btn-code-rouge");
 const statusDiv = document.getElementById("status");
 const historiqueUl = document.getElementById("historique");
 
+const API_URL =
+  "https://grand-cerf-alerte-api.onrender.com";
+
 function ajouterHistorique(texte) {
   const li = document.createElement("li");
+
   const now = new Date();
 
   const dateStr = now.toLocaleString("fr-FR", {
@@ -15,27 +19,65 @@ function ajouterHistorique(texte) {
   });
 
   li.textContent = `${dateStr} - ${texte}`;
+
   historiqueUl.prepend(li);
 }
 
 btnCodeRouge.addEventListener("click", async () => {
+
   const texte = messageInput.value.trim();
 
   if (!texte) {
     statusDiv.textContent =
-      "Merci de saisir un message avant d'envoyer.";
+      "Veuillez saisir un message.";
     return;
   }
 
-  statusDiv.textContent = "Envoi de l'alerte...";
+  statusDiv.textContent =
+    "Envoi de l'alerte...";
 
-  ajouterHistorique(texte);
+  try {
 
-  // TODO : ici on appellera plus tard ton serveur Render
-  // pour déclencher une notification OneSignal à tous les membres.
+    const response = await fetch(
+      `${API_URL}/alerte`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: texte
+        })
+      }
+    );
 
-  setTimeout(() => {
+    const data = await response.json();
+
+    if (data.success) {
+
+      ajouterHistorique(texte);
+
+      statusDiv.textContent =
+        "✅ Alerte envoyée à tous les abonnés.";
+
+      messageInput.value = "";
+
+    } else {
+
+      statusDiv.textContent =
+        "❌ Erreur d'envoi.";
+
+      console.error(data);
+
+    }
+
+  } catch (err) {
+
+    console.error(err);
+
     statusDiv.textContent =
-      "Alerte envoyée (simulation locale pour l'instant).";
-  }, 500);
+      "❌ Impossible de joindre le serveur.";
+
+  }
+
 });
