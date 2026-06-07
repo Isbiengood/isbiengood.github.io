@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Grand Cerf - Code Rouge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Manifest PWA -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Icône -->
+  <link rel="icon" href="logo.png" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- OneSignal SDK -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "cbd0063d-3706-4667-8ba4-c11b2aeab993",
+    });
+  });
+</script>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🚨 Grand Cerf - Code Rouge</h1>
+
+    <label for="message">Message d'urgence</label>
+
+    <textarea
+      id="message"
+      placeholder="Piscine fermée immédiatement">
+    </textarea>
+
+    <button id="btn-code-rouge">
+      🔴 CODE ROUGE
+    </button>
+
+    <div id="status"></div>
+
+    <h2>Historique</h2>
+
+    <ul id="historique"></ul>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
