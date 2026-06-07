@@ -1,0 +1,20 @@
+{
+  "name": "Grand Cerf Alerte",
+  "short_name": "Code Rouge",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#b00020",
+  "icons": [
+    {
+      "src": "boutonAlert.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "boutonAlert.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
