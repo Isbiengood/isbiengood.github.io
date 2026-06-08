@@ -14,16 +14,26 @@ app.get("/", (req, res) => {
 });
 
 app.post("/alerte", async (req, res) => {
+
+  console.log("===== NOUVELLE ALERTE =====");
+  console.log("Body reçu :", req.body);
+
   try {
 
     const message = req.body.message;
 
     if (!message) {
+      console.log("Message manquant");
+
       return res.status(400).json({
         success: false,
         error: "Message manquant"
       });
     }
+
+    console.log("Message :", message);
+    console.log("App ID :", APP_ID);
+    console.log("API Key présente :", !!API_KEY);
 
     const response = await fetch(
       "https://api.onesignal.com/notifications?c=push",
@@ -37,16 +47,23 @@ app.post("/alerte", async (req, res) => {
           app_id: APP_ID,
           included_segments: ["Subscribed Users"],
           headings: {
+            en: "🚨 CODE ROUGE",
             fr: "🚨 CODE ROUGE"
           },
           contents: {
+            en: message,
             fr: message
           }
         })
       }
     );
 
+    console.log("Status OneSignal :", response.status);
+
     const data = await response.json();
+
+    console.log("Réponse OneSignal :");
+    console.log(JSON.stringify(data, null, 2));
 
     res.json({
       success: true,
@@ -55,6 +72,7 @@ app.post("/alerte", async (req, res) => {
 
   } catch (err) {
 
+    console.error("ERREUR :");
     console.error(err);
 
     res.status(500).json({
@@ -67,7 +85,5 @@ app.post("/alerte", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(
-    `Serveur Grand Cerf démarré sur le port ${PORT}`
-  );
+  console.log(`Serveur Grand Cerf démarré sur le port ${PORT}`);
 });
