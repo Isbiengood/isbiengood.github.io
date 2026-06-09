@@ -16,6 +16,64 @@ const pool = new Pool({
 
 const APP_ID = process.env.ONESIGNAL_APP_ID;
 const API_KEY = process.env.ONESIGNAL_API_KEY;
+async function initialiserBase() {
+
+  try {
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS utilisateurs (
+        id SERIAL PRIMARY KEY,
+        nom VARCHAR(100) UNIQUE NOT NULL,
+        role VARCHAR(100) NOT NULL,
+        admin BOOLEAN DEFAULT FALSE,
+        actif BOOLEAN DEFAULT TRUE,
+        date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS alertes (
+        id SERIAL PRIMARY KEY,
+        auteur VARCHAR(100),
+        message TEXT NOT NULL,
+        date_heure TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    const utilisateurs = [
+      ["Jean-Marc", "Administrateur", true],
+      ["Marine", "Administratrice", true],
+      ["Joann", "Directeur technique", false],
+      ["Arthur", "Technicien", false],
+      ["Dylan", "Espaces verts", false],
+      ["Diannou", "Espaces verts", false],
+      ["Emma", "Stagiaire direction", false],
+      ["Isabelle", "Gouvernante", false],
+      ["Sam", "Gouvernante", false]
+    ];
+
+    for (const [nom, role, admin] of utilisateurs) {
+
+      await pool.query(
+        `
+        INSERT INTO utilisateurs (nom, role, admin)
+        VALUES ($1, $2, $3)
+        ON CONFLICT (nom) DO NOTHING
+        `,
+        [nom, role, admin]
+      );
+
+    }
+
+    console.log("Base initialisée");
+
+  } catch (err) {
+
+    console.error("Erreur initialisation base :", err);
+
+  }
+
+}
 
 // Vérification serveur + base
 app.get("/", async (req, res) => {
@@ -104,8 +162,14 @@ contents: {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(
-    `Serveur Grand Cerf démarré sur le port ${PORT}`
-  );
+initialiserBase().then(() => {
+
+  app.listen(PORT, () => {
+
+    console.log(
+      `Serveur Grand Cerf démarré sur le port ${PORT}`
+    );
+
+  });
+
 });
