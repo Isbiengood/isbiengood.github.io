@@ -46,7 +46,7 @@ app.post("/alerte", async (req, res) => {
   try {
 
     const { message } = req.body;
-
+ 
     if (!message) {
       return res.status(400).json({
         success: false,
