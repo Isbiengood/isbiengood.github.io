@@ -69,11 +69,13 @@ app.post("/alerte", async (req, res) => {
           app_id: APP_ID,
           included_segments: ["Total Subscriptions"],
           headings: {
-            fr: "🚨 CODE ROUGE"
-          },
-          contents: {
-            fr: message
-          }
+  en: "🚨 CODE ROUGE",
+  fr: "🚨 CODE ROUGE"
+},
+contents: {
+  en: message,
+  fr: message
+}
         })
       }
     );
