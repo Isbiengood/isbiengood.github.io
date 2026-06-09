@@ -160,6 +160,30 @@ contents: {
 
 });
 
+app.get("/utilisateurs", async (req, res) => {
+
+  try {
+
+    const result = await pool.query(`
+      SELECT nom, role, admin, actif
+      FROM utilisateurs
+      ORDER BY nom
+    `);
+
+    res.json(result.rows);
+
+  } catch (err) {
+
+    console.error(err);
+
+    res.status(500).json({
+      erreur: err.message
+    });
+
+  }
+
+});
+
 const PORT = process.env.PORT || 3000;
 
 initialiserBase().then(() => {
