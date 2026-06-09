@@ -103,7 +103,7 @@ app.post("/alerte", async (req, res) => {
 
   try {
 
-    const { message } = req.body;
+    const { message, auteur } = req.body;
  
     if (!message) {
       return res.status(400).json({
@@ -114,6 +114,13 @@ app.post("/alerte", async (req, res) => {
 
     console.log("===== NOUVELLE ALERTE =====");
     console.log(message);
+    await pool.query(
+  `
+  INSERT INTO alertes (auteur, message)
+  VALUES ($1, $2)
+  `,
+  [auteur || "Inconnu", message]
+);
 
     const response = await fetch(
       "https://api.onesignal.com/notifications?c=push",
@@ -168,6 +175,35 @@ app.get("/utilisateurs", async (req, res) => {
       SELECT nom, role, admin, actif
       FROM utilisateurs
       ORDER BY nom
+    `);
+
+    res.json(result.rows);
+
+  } catch (err) {
+
+    console.error(err);
+
+    res.status(500).json({
+      erreur: err.message
+    });
+
+  }
+
+});
+
+app.get("/alertes", async (req, res) => {
+
+  try {
+
+    const result = await pool.query(`
+      SELECT
+        id,
+        auteur,
+        message,
+        date_heure
+      FROM alertes
+      ORDER BY date_heure DESC
+      LIMIT 100
     `);
 
     res.json(result.rows);
