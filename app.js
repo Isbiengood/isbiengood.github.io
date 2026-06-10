@@ -94,26 +94,16 @@ async function chargerHistorique() {
 
     const alertes = await response.json();
 
+    alert("Nombre d'alertes : " + alertes.length);
+
     historiqueUl.innerHTML = "";
 
-    alertes.reverse().forEach((alerte) => {
+    alertes.forEach((alerte) => {
 
       const li = document.createElement("li");
 
-      const date = new Date(
-        alerte.date_heure
-      );
-
-      const dateStr =
-        date.toLocaleString("fr-FR", {
-          day: "2-digit",
-          month: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit"
-        });
-
       li.textContent =
-        `${dateStr} - ${alerte.auteur} : ${alerte.message}`;
+        "TEST AFFICHAGE";
 
       historiqueUl.appendChild(li);
 
@@ -131,9 +121,3 @@ async function chargerHistorique() {
 }
 
 chargerHistorique();
-
-const alertes = await response.json();
-
-alert("Nombre d'alertes : " + alertes.length);
-
-historiqueUl.innerHTML = "";
