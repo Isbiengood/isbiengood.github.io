@@ -16,6 +16,67 @@ const pool = new Pool({
 
 const APP_ID = process.env.ONESIGNAL_APP_ID;
 const API_KEY = process.env.ONESIGNAL_API_KEY;
+console.log("APP_ID présent :", !!APP_ID);
+console.log("API_KEY présente :", !!API_KEY);
+console.log("Longueur API_KEY :", API_KEY ? API_KEY.length : 0);
+async function initialiserBase() {
+
+  try {
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS utilisateurs (
+        id SERIAL PRIMARY KEY,
+        nom VARCHAR(100) UNIQUE NOT NULL,
+        role VARCHAR(100) NOT NULL,
+        admin BOOLEAN DEFAULT FALSE,
+        actif BOOLEAN DEFAULT TRUE,
+        date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+ 
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS alertes (
+        id SERIAL PRIMARY KEY,
+        auteur VARCHAR(100),
+        message TEXT NOT NULL,
+        date_heure TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    const utilisateurs = [
+      ["Jean-Marc", "Administrateur", true],
+      ["Marine", "Administratrice", true],
+      ["Joann", "Directeur technique", false],
+      ["Arthur", "Technicien", false],
+      ["Dylan", "Espaces verts", false],
+      ["Diannou", "Espaces verts", false],
+      ["Emma", "Stagiaire direction", false],
+      ["Isabelle", "Gouvernante", false],
+      ["Sam", "Gouvernante", false]
+    ];
+
+    for (const [nom, role, admin] of utilisateurs) {
+
+      await pool.query(
+        `
+        INSERT INTO utilisateurs (nom, role, admin)
+        VALUES ($1, $2, $3)
+        ON CONFLICT (nom) DO NOTHING
+        `,
+        [nom, role, admin]
+      );
+
+    }
+
+    console.log("Base initialisée");
+
+  } catch (err) {
+
+    console.error("Erreur initialisation base :", err);
+
+  }
+
+}
 
 // Vérification serveur + base
 app.get("/", async (req, res) => {
@@ -45,7 +106,7 @@ app.post("/alerte", async (req, res) => {
 
   try {
 
-    const { message } = req.body;
+    const { message, auteur } = req.body;
  
     if (!message) {
       return res.status(400).json({
@@ -56,7 +117,16 @@ app.post("/alerte", async (req, res) => {
 
     console.log("===== NOUVELLE ALERTE =====");
     console.log(message);
+    await pool.query(
+  `
+  INSERT INTO alertes (auteur, message)
+  VALUES ($1, $2)
+  `,
+  [auteur || "Inconnu", message]
+);
 
+    console.log("ALERTE ENREGISTREE EN BASE");
+    
     const response = await fetch(
       "https://api.onesignal.com/notifications?c=push",
       {
@@ -102,10 +172,69 @@ contents: {
 
 });
 
+app.get("/utilisateurs", async (req, res) => {
+
+  try {
+
+    const result = await pool.query(`
+      SELECT nom, role, admin, actif
+      FROM utilisateurs
+      ORDER BY nom
+    `);
+
+    res.json(result.rows);
+
+  } catch (err) {
+
+    console.error(err);
+
+    res.status(500).json({
+      erreur: err.message
+    });
+
+  }
+
+});
+
+app.get("/alertes", async (req, res) => {
+
+  try {
+
+    const result = await pool.query(`
+      SELECT
+        id,
+        auteur,
+        message,
+        date_heure
+      FROM alertes
+      ORDER BY date_heure DESC
+      LIMIT 100
+    `);
+
+    res.json(result.rows);
+
+  } catch (err) {
+
+    console.error(err);
+
+    res.status(500).json({
+      erreur: err.message
+    });
+
+  }
+
+});
+
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(
-    `Serveur Grand Cerf démarré sur le port ${PORT}`
-  );
+initialiserBase().then(() => {
+
+  app.listen(PORT, () => {
+
+    console.log(
+      `Serveur Grand Cerf démarré sur le port ${PORT}`
+    );
+
+  });
+
 });
