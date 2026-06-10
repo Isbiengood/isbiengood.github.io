@@ -1,4 +1,4 @@
-alert("VERSION TEST");
+
 const messageInput = document.getElementById("message");
 const btnCodeRouge = document.getElementById("btn-code-rouge");
 const statusDiv = document.getElementById("status");
@@ -94,20 +94,32 @@ async function chargerHistorique() {
 
     const alertes = await response.json();
 
-    alert("Nombre d'alertes : " + alertes.length);
 
     historiqueUl.innerHTML = "";
 
-    alertes.forEach((alerte) => {
+   alertes.forEach((alerte) => {
 
-      const li = document.createElement("li");
+  const li = document.createElement("li");
 
-      li.textContent =
-  `${alerte.auteur} : ${alerte.message}`;
+  const date = new Date(
+    alerte.date_heure
+  );
 
-      historiqueUl.appendChild(li);
-
+  const dateStr =
+    date.toLocaleString("fr-FR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
     });
+
+  li.textContent =
+    `${dateStr} - ${alerte.auteur} : ${alerte.message}`;
+
+  historiqueUl.appendChild(li);
+
+});
 
   } catch (err) {
 
