@@ -45,9 +45,10 @@ btnCodeRouge.addEventListener("click", async () => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          message: texte
-        })
+       body: JSON.stringify({
+  auteur: "Jean-Marc",
+  message: texte
+})
       }
     );
 
