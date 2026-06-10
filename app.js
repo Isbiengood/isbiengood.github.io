@@ -11,6 +11,11 @@ document.getElementById(
  "btn-valider-utilisateur"
 );
 
+alert(
+  "Bouton trouvé : " +
+  (btnValiderUtilisateur !== null)
+);
+
 const selectionUtilisateur =
 document.getElementById(
   "selection-utilisateur"
