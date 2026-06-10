@@ -16,6 +16,9 @@ const pool = new Pool({
 
 const APP_ID = process.env.ONESIGNAL_APP_ID;
 const API_KEY = process.env.ONESIGNAL_API_KEY;
+console.log("APP_ID présent :", !!APP_ID);
+console.log("API_KEY présente :", !!API_KEY);
+console.log("Longueur API_KEY :", API_KEY ? API_KEY.length : 0);
 async function initialiserBase() {
 
   try {
