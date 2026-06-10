@@ -131,3 +131,9 @@ async function chargerHistorique() {
 }
 
 chargerHistorique();
+
+const alertes = await response.json();
+
+alert("Nombre d'alertes : " + alertes.length);
+
+historiqueUl.innerHTML = "";
