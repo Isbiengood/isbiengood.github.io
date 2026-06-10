@@ -83,3 +83,51 @@ btnCodeRouge.addEventListener("click", async () => {
   }
 
 });
+
+async function chargerHistorique() {
+
+  try {
+
+    const response = await fetch(
+      `${API_URL}/alertes`
+    );
+
+    const alertes = await response.json();
+
+    historiqueUl.innerHTML = "";
+
+    alertes.reverse().forEach((alerte) => {
+
+      const li = document.createElement("li");
+
+      const date = new Date(
+        alerte.date_heure
+      );
+
+      const dateStr =
+        date.toLocaleString("fr-FR", {
+          day: "2-digit",
+          month: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+
+      li.textContent =
+        `${dateStr} - ${alerte.auteur} : ${alerte.message}`;
+
+      historiqueUl.appendChild(li);
+
+    });
+
+  } catch (err) {
+
+    console.error(
+      "Erreur chargement historique",
+      err
+    );
+
+  }
+
+}
+
+chargerHistorique();
