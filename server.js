@@ -122,6 +122,8 @@ app.post("/alerte", async (req, res) => {
   [auteur || "Inconnu", message]
 );
 
+    console.log("ALERTE ENREGISTREE EN BASE");
+    
     const response = await fetch(
       "https://api.onesignal.com/notifications?c=push",
       {
