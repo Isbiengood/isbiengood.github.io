@@ -8,7 +8,7 @@ document.getElementById("utilisateur");
 
 const btnValiderUtilisateur =
 document.getElementById(
-  "btn-valider-utilisateur"
+ "btn-valider-utilisateur"
 );
 
 const selectionUtilisateur =
@@ -50,9 +50,17 @@ function ajouterHistorique(texte) {
 btnValiderUtilisateur
 .addEventListener("click", () => {
 
+  alert("Bouton Valider cliqué");
+
   localStorage.setItem(
     "grandcerf_utilisateur",
     utilisateurSelect.value
+  );
+
+  alert(
+    localStorage.getItem(
+      "grandcerf_utilisateur"
+    )
   );
 
   selectionUtilisateur.style.display =
