@@ -4,7 +4,7 @@ const statusDiv = document.getElementById("status");
 const historiqueUl = document.getElementById("historique");
 
 const API_URL =
-  "https://grand-cerf-alerte-api.onrender.com";
+"https://grand-cerf-alerte-api-test.onrender.com";
 
 function ajouterHistorique(texte) {
   const li = document.createElement("li");
