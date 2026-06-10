@@ -1,3 +1,4 @@
+alert("VERSION TEST");
 const messageInput = document.getElementById("message");
 const btnCodeRouge = document.getElementById("btn-code-rouge");
 const statusDiv = document.getElementById("status");
