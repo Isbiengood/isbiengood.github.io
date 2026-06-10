@@ -4,7 +4,7 @@ const statusDiv = document.getElementById("status");
 const historiqueUl = document.getElementById("historique");
 
 const API_URL =
-  "https://grand-cerf-alerte-api.onrender.com";
+"https://grand-cerf-alerte-api-test.onrender.com";
 
 function ajouterHistorique(texte) {
   const li = document.createElement("li");
@@ -45,9 +45,10 @@ btnCodeRouge.addEventListener("click", async () => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          message: texte
-        })
+       body: JSON.stringify({
+  auteur: "Jean-Marc",
+  message: texte
+})
       }
     );
 
@@ -81,3 +82,54 @@ btnCodeRouge.addEventListener("click", async () => {
   }
 
 });
+
+async function chargerHistorique() {
+
+  try {
+
+    const response = await fetch(
+      `${API_URL}/alertes`
+    );
+
+    const alertes = await response.json();
+
+
+    historiqueUl.innerHTML = "";
+
+   alertes.forEach((alerte) => {
+
+  const li = document.createElement("li");
+
+  const date = new Date(
+    alerte.date_heure
+  );
+
+  const dateStr =
+    date.toLocaleString("fr-FR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+  li.textContent =
+    `${dateStr} - ${alerte.auteur} : ${alerte.message}`;
+
+  historiqueUl.appendChild(li);
+
+});
+
+  } catch (err) {
+
+    console.error(
+      "Erreur chargement historique",
+      err
+    );
+
+  }
+
+}
+
+chargerHistorique();
+
