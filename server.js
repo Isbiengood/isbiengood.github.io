@@ -30,7 +30,7 @@ async function initialiserBase() {
         date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
-
+ 
     await pool.query(`
       CREATE TABLE IF NOT EXISTS alertes (
         id SERIAL PRIMARY KEY,
