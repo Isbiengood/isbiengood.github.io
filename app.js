@@ -103,7 +103,7 @@ async function chargerHistorique() {
       const li = document.createElement("li");
 
       li.textContent =
-        "TEST AFFICHAGE";
+  `${alerte.auteur} : ${alerte.message}`;
 
       historiqueUl.appendChild(li);
 
