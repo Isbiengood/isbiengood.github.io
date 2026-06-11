@@ -3,6 +3,7 @@ const messageInput = document.getElementById("message");
 const btnCodeRouge = document.getElementById("btn-code-rouge");
 const statusDiv = document.getElementById("status");
 const historiqueUl = document.getElementById("historique");
+const utilisateurConnecte = document.getElementById("utilisateur-connecte");
 const utilisateurSelect =
 document.getElementById("utilisateur");
 
@@ -32,6 +33,9 @@ if (utilisateurSauvegarde) {
 
   selectionUtilisateur.style.display =
     "none";
+
+  utilisateurConnecte.textContent =
+    `👤 Connecté : ${utilisateurSauvegarde}`;
 
 }
 
@@ -71,6 +75,9 @@ btnValiderUtilisateur
   selectionUtilisateur.style.display =
     "none";
 
+ utilisateurConnecte.textContent =
+  `👤 Connecté : ${utilisateurSelect.value}`;
+ 
 });
 btnCodeRouge.addEventListener("click", async () => {
 
