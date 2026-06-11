@@ -3,7 +3,13 @@ const messageInput = document.getElementById("message");
 const btnCodeRouge = document.getElementById("btn-code-rouge");
 const statusDiv = document.getElementById("status");
 const historiqueUl = document.getElementById("historique");
-const utilisateurConnecte = document.getElementById("utilisateur-connecte");
+const utilisateurConnecte = 
+ document.getElementById(
+  "utilisateur-connecte");
+const btnChangerUtilisateur =
+document.getElementById(
+  "btn-changer-utilisateur"
+);
 const utilisateurSelect =
 document.getElementById("utilisateur");
 
@@ -38,7 +44,14 @@ if (utilisateurSauvegarde) {
     `👤 Connecté : ${utilisateurSauvegarde}`;
 
 }
+btnChangerUtilisateur.style.display =
+  "inline-block";
+else {
 
+  btnChangerUtilisateur.style.display =
+    "none";
+
+}
 function ajouterHistorique(texte) {
   const li = document.createElement("li");
 
@@ -78,6 +91,24 @@ btnValiderUtilisateur
  utilisateurConnecte.textContent =
   `👤 Connecté : ${utilisateurSelect.value}`;
  
+});
+btnChangerUtilisateur
+.addEventListener("click", () => {
+
+  if (
+    confirm(
+      "Changer d'utilisateur ?"
+    )
+  ) {
+
+    localStorage.removeItem(
+      "grandcerf_utilisateur"
+    );
+
+    location.reload();
+
+  }
+
 });
 btnCodeRouge.addEventListener("click", async () => {
 
