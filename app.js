@@ -43,10 +43,10 @@ if (utilisateurSauvegarde) {
   utilisateurConnecte.textContent =
     `👤 Connecté : ${utilisateurSauvegarde}`;
 
-}
-btnChangerUtilisateur.style.display =
-  "inline-block";
-else {
+  btnChangerUtilisateur.style.display =
+    "inline-block";
+
+} else {
 
   btnChangerUtilisateur.style.display =
     "none";
@@ -71,13 +71,6 @@ function ajouterHistorique(texte) {
 
 btnValiderUtilisateur
 .addEventListener("click", () => {
-
-  alert("Bouton Valider cliqué");
-
-  localStorage.setItem(
-    "grandcerf_utilisateur",
-    utilisateurSelect.value
-  );
 
   alert(
     localStorage.getItem(
