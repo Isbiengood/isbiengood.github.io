@@ -2,9 +2,37 @@ const messageInput = document.getElementById("message");
 const btnCodeRouge = document.getElementById("btn-code-rouge");
 const statusDiv = document.getElementById("status");
 const historiqueUl = document.getElementById("historique");
+const utilisateurSelect =
+document.getElementById("utilisateur");
+
+const btnValiderUtilisateur =
+document.getElementById(
+ "btn-valider-utilisateur"
+);
+
+alert(
+  "Bouton trouvé : " +
+  (btnValiderUtilisateur !== null)
+);
+
+const selectionUtilisateur =
+document.getElementById(
+  "selection-utilisateur"
+);
 
 const API_URL =
 "https://grand-cerf-alerte-api-test.onrender.com";
+const utilisateurSauvegarde =
+localStorage.getItem(
+  "grandcerf_utilisateur"
+);
+
+if (utilisateurSauvegarde) {
+
+  selectionUtilisateur.style.display =
+    "none";
+
+}
 
 function ajouterHistorique(texte) {
   const li = document.createElement("li");
@@ -23,6 +51,26 @@ function ajouterHistorique(texte) {
   historiqueUl.prepend(li);
 }
 
+btnValiderUtilisateur
+.addEventListener("click", () => {
+
+  alert("Bouton Valider cliqué");
+
+  localStorage.setItem(
+    "grandcerf_utilisateur",
+    utilisateurSelect.value
+  );
+
+  alert(
+    localStorage.getItem(
+      "grandcerf_utilisateur"
+    )
+  );
+
+  selectionUtilisateur.style.display =
+    "none";
+
+});
 btnCodeRouge.addEventListener("click", async () => {
 
   const texte = messageInput.value.trim();
@@ -45,8 +93,10 @@ btnCodeRouge.addEventListener("click", async () => {
         headers: {
           "Content-Type": "application/json"
         },
-       body: JSON.stringify({
-  auteur: "Jean-Marc",
+      body: JSON.stringify({
+  auteur: localStorage.getItem(
+    "grandcerf_utilisateur"
+  ),
   message: texte
 })
       }
@@ -132,4 +182,3 @@ async function chargerHistorique() {
 }
 
 chargerHistorique();
-
