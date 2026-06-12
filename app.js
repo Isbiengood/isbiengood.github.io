@@ -1,4 +1,4 @@
-alert("APP DEMARREE");
+alert("APP CHARGEE");
 const messageInput = document.getElementById("message");
 const btnCodeRouge = document.getElementById("btn-code-rouge");
 const statusDiv = document.getElementById("status");
