@@ -118,6 +118,13 @@ btnCodeRouge.addEventListener("click", async () => {
 
   try {
 
+alert(
+  "Auteur envoyé : " +
+  localStorage.getItem(
+    "grandcerf_utilisateur"
+  )
+);
+   
     const response = await fetch(
       `${API_URL}/alerte`,
       {
