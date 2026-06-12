@@ -72,19 +72,35 @@ function ajouterHistorique(texte) {
 btnValiderUtilisateur
 .addEventListener("click", () => {
 
-  alert(
-    localStorage.getItem(
-      "grandcerf_utilisateur"
-    )
+  console.log(
+    "Utilisateur enregistré :",
+    utilisateurSelect.value
   );
+
+  localStorage.setItem(
+    "grandcerf_utilisateur",
+    utilisateurSelect.value
+  );
+ 
+alert(
+  localStorage.getItem(
+    "grandcerf_utilisateur"
+  )
+);
+ 
+  utilisateurConnecte.textContent =
+    `👤 Connecté : ${utilisateurSelect.value}`;
 
   selectionUtilisateur.style.display =
     "none";
 
- utilisateurConnecte.textContent =
-  `👤 Connecté : ${utilisateurSelect.value}`;
+  btnChangerUtilisateur.style.display =
+    "inline-block";
+
+});
  
 });
+
 btnChangerUtilisateur
 .addEventListener("click", () => {
 
