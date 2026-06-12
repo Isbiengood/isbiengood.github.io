@@ -98,8 +98,6 @@ alert(
     "inline-block";
 
 });
- 
-});
 
 btnChangerUtilisateur
 .addEventListener("click", () => {
